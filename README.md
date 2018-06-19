@@ -1,6 +1,11 @@
 # gradle48_jdk11_replace_task
 Reproduce issue with Gradle 4.8 and JDK 11
 
+Issues
+======
+- https://github.com/gradle/gradle/issues/5730
+- https://github.com/gradle/gradle/issues/5731
+
 Replace test task
 -----------------
 
