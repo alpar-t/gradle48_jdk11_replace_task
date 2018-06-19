@@ -13,8 +13,7 @@ class RandomizedTestingTask extends DefaultTask {
 
 ext.replaceTestTask =  {Project project ->
     Task oldTestTask = project.tasks.findByPath('test')
-    project.tasks.remove(oldTestTask)
-    RandomizedTestingTask newTestTask = project.tasks.create(name: 'test', type: RandomizedTestingTask)
+    RandomizedTestingTask newTestTask = project.tasks.replace('test', RandomizedTestingTask)
     newTestTask.dependsOn(oldTestTask.dependsOn)
     newTestTask.dependsOn('testClasses')
     Task checkTask = tasks.findByPath('check')
