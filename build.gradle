@@ -2,35 +2,6 @@ plugins {
     id 'java'
 }
 
-class RandomizedTestingTask extends DefaultTask {
-
-    @TaskAction
-    def action() {
-        println "random action"
-    }
-
-}
-
-ext.replaceTestTask =  {Project project ->
-    Task oldTestTask = project.tasks.findByPath('test')
-    project.tasks.remove(oldTestTask)
-    RandomizedTestingTask newTestTask = project.tasks.create(name: 'test', type: RandomizedTestingTask)
-    newTestTask.dependsOn(oldTestTask.dependsOn)
-    newTestTask.dependsOn('testClasses')
-    Task checkTask = tasks.findByPath('check')
-    checkTask.dependsOn.remove(oldTestTask)
-    checkTask.dependsOn.add(newTestTask)
-    println "test task is now ${project.tasks.findByPath('test').class}"
-}
-
-class TestPlugin implements Plugin<Project> {
-    void apply(Project project) {
-       project.replaceTestTask(project)
-    }
-}
-//apply plugin: TestPlugin
-replaceTestTask(project)
-
 dependencies {
 }
 
@@ -42,19 +13,3 @@ repositories {
 println GradleVersion.current().toString()
 println org.gradle.internal.jvm.Jvm.current()
 
-test {
-    doFirst {
-        println "Running tests"
-        //println test.class
-    }
-}
-
-project.rootProject.getGradle().getTaskGraph().whenReady {
-    def nonConforming = project.getGradle().getTaskGraph().allTasks
-            .findAll { it.name == "test" }
-            .collect { "${it.path} -> ${it.class}"  }
-    if (nonConforming.isEmpty() == false) {
-        println ("Found the following `test` tasks" +
-                "\n${nonConforming.join("\n")}")
-    }
-}
