@@ -20,7 +20,7 @@ ext.replaceTestTask =  {Project project ->
     Task checkTask = tasks.findByPath('check')
     checkTask.dependsOn.remove(oldTestTask)
     checkTask.dependsOn.add(newTestTask)
-    println "test task is now ${newTestTask.class}"
+    println "test task is now ${project.tasks.findByPath('test').class}"
 }
 
 class TestPlugin implements Plugin<Project> {
